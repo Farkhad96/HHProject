@@ -20,7 +20,7 @@ class APIClient(ABC):
         """Protected accessor for base URL (read-only)."""
         return self.__base_url
 
-    def __connect(self) -> None:
+    def _connect(self) -> None:
         """Check API availability with a GET request to base URL."""
         try:
             response = requests.get(self.__base_url, timeout=10)
@@ -33,7 +33,7 @@ class APIClient(ABC):
 
     def _check_connection(self) -> None:
         """Template method to verify availability (used by children)."""
-        self.__connect()
+        self._connect()
 
     @abstractmethod
     def get_vacancies(self, keyword: str) -> list[dict]:

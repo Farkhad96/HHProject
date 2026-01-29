@@ -22,16 +22,12 @@ class HeadHunterAPI(APIClient):
         self.__per_page = 100
         self.__area = 113
 
-    def __connect(self) -> None:
-        """Check availability of HH API."""
-        super()._check_connection()
-
     def get_vacancies(self, keyword: str) -> list[dict]:
         """Fetch vacancies by keyword from HH."""
         if not keyword:
             raise ValueError("Ключевое слово не может быть пустым")
 
-        self.__connect()
+        self._check_connection()
 
         url = f"{self._get_base_url()}{self.__vacancies_endpoint}"
         params = {
