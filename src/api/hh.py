@@ -6,10 +6,10 @@ from typing import Any
 
 import requests
 
-from src.api.base import APIClient
+from src.api.base import APIClient, GetVacancies
 
 
-class HeadHunterAPI(APIClient):
+class HeadHunterAPI(APIClient, GetVacancies):
     """HeadHunter API client using requests."""
 
     __vacancies_endpoint: str
@@ -37,7 +37,7 @@ class HeadHunterAPI(APIClient):
         }
         try:
             response = requests.get(url, params=params, timeout=15)
-        except requests.RequestException as exc:  # noqa: BLE001
+        except requests.RequestException as exc:
             raise ConnectionError(f"Ошибка сети: {exc}") from exc
 
         if response.status_code != 200:
@@ -47,10 +47,13 @@ class HeadHunterAPI(APIClient):
 
         try:
             data: dict[str, Any] = response.json()
-        except ValueError as exc:  # noqa: BLE001
+        except ValueError as exc:
             raise ValueError("Некорректный JSON ответ от HH") from exc
 
         items = data.get("items")
         if not isinstance(items, list):
             raise ValueError("Ответ HH не содержит списка items")
         return items
+    def work(self) -> None:
+        """Fetch vacancies for given keyword."""
+        pass

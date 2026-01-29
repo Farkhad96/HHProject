@@ -7,6 +7,12 @@ from typing import Final
 
 import requests
 
+class GetVacancies(ABC):
+    """Abstract base for fetching vacancies."""
+    @abstractmethod
+    def get_vacancies(self, keyword: str) -> list[dict]:
+        """Fetch vacancies for given keyword."""
+        raise NotImplementedError
 
 class APIClient(ABC):
     """Abstract base for API clients."""
@@ -36,6 +42,6 @@ class APIClient(ABC):
         self._connect()
 
     @abstractmethod
-    def get_vacancies(self, keyword: str) -> list[dict]:
+    def work(self) -> None:
         """Fetch vacancies for given keyword."""
         raise NotImplementedError
